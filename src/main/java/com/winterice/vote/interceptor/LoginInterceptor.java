@@ -11,10 +11,12 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Objects;
 
 
 public class LoginInterceptor implements HandlerInterceptor {
+    private static final ThreadLocal<String> userId = new ThreadLocal<>();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //放行预检请求
@@ -46,13 +48,18 @@ public class LoginInterceptor implements HandlerInterceptor {
         }else{
             token = token.replaceAll("Bearer ","");
         }
-        if(JwtTokenUtils.getUserRolesByToken(token).contains(target)){
-//            localId.set(JwtTokenUtils.getUsernameByToken(token));
+        List<String> roles = JwtTokenUtils.getUserRolesByToken(token);
+        if(roles.contains(target)){
+            userId.set(JwtTokenUtils.getUsernameByToken(token));
             response.addHeader("userId", JwtTokenUtils.getUsernameByToken(token));
             return true;
         }else {
             return false;
         }
+    }
+
+    public static String getUserId(){
+        return userId.get();
     }
 }
 

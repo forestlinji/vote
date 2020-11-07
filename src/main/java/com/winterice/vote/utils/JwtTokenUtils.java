@@ -70,8 +70,10 @@ public class JwtTokenUtils {
      * 获取用户所有角色
      */
     public static List<String> getUserRolesByToken(String token) {
-        String role = (String) getTokenBody(token)
+        Claims tokenBody = getTokenBody(token);
+        String role = (String) tokenBody
                 .get(SecurityConstants.ROLE_CLAIMS);
+        System.out.println(role);
         return Arrays.stream(role.split(",")).collect(Collectors.toList());
     }
 

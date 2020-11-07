@@ -5,5 +5,5 @@ package com.winterice.vote.pojo;
  * @create 2020/11/7 10:44
  */
 public class VoteVo {
-    public Integer[] voteList;
+    public Integer[] voted;
 }

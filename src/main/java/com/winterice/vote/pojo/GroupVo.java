@@ -14,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GroupVo {
-    private List<GroupCount> records;
+    private List<Group> records;
 }

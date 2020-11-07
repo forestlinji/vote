@@ -2,6 +2,7 @@ package com.winterice.vote.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.winterice.vote.annotation.Auth;
@@ -37,14 +38,20 @@ public class VoteController {
     ThreadLocal<String> threadLocal = new ThreadLocal<>();
     @PostMapping("vote")
     @Auth
+<<<<<<< HEAD
+    public ResponseJson<Object> vote(@RequestBody() VoteVo voteVo, HttpServletResponse response){
+        int[] ids = voteVo.voted;
+        String uid = response.getHeader("userId");
+=======
     public ResponseJson<Object> vote(@RequestBody() VoteVo voteVo){
         Integer[] ids = voteVo.voted;
         String uid = LoginInterceptor.getUserId();
+>>>>>>> 203d22a0aa1d734a68ebd3120ea6fdf8a24c00d0
         User user = userMapper.selectById(uid);
         if(user.getHasVoted() == 1){
             return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
         }else {
-            for (Integer groupId:ids){
+            for (int groupId:ids){
                 Vote vote = new Vote(uid, groupId);
                 if(voteMapper.insert(vote) == 1){
                     if(groupMapper.addNum(groupId) != 1){
@@ -80,10 +87,10 @@ public class VoteController {
     public ResponseJson<GroupVo> getVote(){
         return new ResponseJson<>(ResultCode.SUCCESS, new GroupVo(groupMapper.selectAll()));
     }
-    @Update("reset")
+    @GetMapping("reset")
     @Auth("admin")
     public ResponseJson<String> reset(){
-        if(userMapper.reset()){
+        if(userMapper.reset() && groupMapper.reset()>0 && voteMapper.delete(null)>0){
             return new ResponseJson<>(ResultCode.SUCCESS);
         }else {
             return new ResponseJson<>(ResultCode.UNVALIDPARAMS);

@@ -68,14 +68,14 @@ public class VoteController {
         }
         PageResult<UserVo> pageResult = new PageResult<>(userVoList);
         pageResult.setCurrent(voteIPage.getCurrent());
-        page.setSize(voteIPage.getSize());
-        page.setTotal(voteIPage.getTotal());
+        pageResult.setSize(voteIPage.getSize());
+        pageResult.setTotal(voteIPage.getTotal());
         return new ResponseJson<>(ResultCode.SUCCESS, pageResult);
     }
     @GetMapping("getVote")
     @Auth()
     public ResponseJson<GroupVo> getVote(){
-        return new ResponseJson<>(ResultCode.SUCCESS, new GroupVo(groupMapper.selectList(null)));
+        return new ResponseJson<>(ResultCode.SUCCESS, new GroupVo(groupMapper.selectAll()));
     }
     @Update("reset")
     @Auth("admin")

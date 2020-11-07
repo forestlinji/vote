@@ -1,19 +1,26 @@
 package com.winterice.vote.pojo;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+
+
+import com.baomidou.mybatisplus.annotation.TableId;
+
 
 import java.util.Objects;
 
 
 public class User {
 
+
+
+    @TableId
+
     private String uid;
     private String realName;
     private String password;
     private Integer groupId;
-    private Integer hasVoteed;
+
+    private Integer hasVoted;
+
 
     public String getUid() {
         return uid;
@@ -47,23 +54,29 @@ public class User {
         this.groupId = groupId;
     }
 
-    public Integer getHasVoteed() {
-        return hasVoteed;
+
+    public Integer getHasVoted() {
+        return hasVoted;
     }
 
-    public void setHasVoteed(Integer hasVoteed) {
-        this.hasVoteed = hasVoteed;
+    public void setHasVoted(Integer hasVoted) {
+        this.hasVoted = hasVoted;
+
     }
 
     public User() {
     }
 
-    public User(String uid, String realName, String password, Integer groupId, Integer hasVoteed) {
+
+    public User(String uid, String realName, String password, Integer groupId, Integer hasVoted) {
+
         this.uid = uid;
         this.realName = realName;
         this.password = password;
         this.groupId = groupId;
-        this.hasVoteed = hasVoteed;
+
+        this.hasVoted = hasVoted;
+
     }
 
     @Override
@@ -75,12 +88,16 @@ public class User {
                 Objects.equals(realName, user.realName) &&
                 Objects.equals(password, user.password) &&
                 Objects.equals(groupId, user.groupId) &&
-                Objects.equals(hasVoteed, user.hasVoteed);
+
+                Objects.equals(hasVoted, user.hasVoted);
+
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uid, realName, password, groupId, hasVoteed);
+
+        return Objects.hash(uid, realName, password, groupId, hasVoted);
+
     }
 
     @Override
@@ -90,7 +107,9 @@ public class User {
                 ", realName='" + realName + '\'' +
                 ", password='" + password + '\'' +
                 ", groupId=" + groupId +
-                ", hasVoteed=" + hasVoteed +
+
+                ", hasVoteed=" + hasVoted +
+
                 '}';
     }
 }

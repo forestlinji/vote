@@ -15,7 +15,6 @@ import java.util.Objects;
 
 
 public class LoginInterceptor implements HandlerInterceptor {
-    ThreadLocal<String> localId = new ThreadLocal<>();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //放行预检请求
@@ -32,18 +31,24 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         String target = auth.value();
         //鉴权逻辑
-        if(checkRole(request, hand, target)){
+        if(checkRole(request, hand, target, response)){
             return true;
         }else{
             throw new UnloginException("您未登录或权限不足");
         }
     }
 
-    private boolean checkRole(HttpServletRequest request, HandlerMethod hand, String target) throws Exception{
+    private boolean checkRole(HttpServletRequest request, HandlerMethod hand, String target, HttpServletResponse response) throws Exception{
         String role = request.getHeader("role");
         String token = request.getHeader("Authorization");
+        if(token == null){
+            return false;
+        }else{
+            token = token.replaceAll("Bearer ","");
+        }
         if(JwtTokenUtils.getUserRolesByToken(token).contains(target)){
-            localId.set(JwtTokenUtils.getUsernameByToken(token));
+//            localId.set(JwtTokenUtils.getUsernameByToken(token));
+            response.addHeader("userId", JwtTokenUtils.getUsernameByToken(token));
             return true;
         }else {
             return false;

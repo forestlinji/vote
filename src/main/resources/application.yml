@@ -1,9 +1,19 @@
+
+
+server:
+  port: 11451
 spring:
+  jackson:
+    serialization:
+      write-dates-as-timestamps: true
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    url: jdbc:mysql://localhost:3306/vote?serverTimezone=GMT
-    password: root
-mybatis-plus:
-  configuration:
-    map-underscore-to-camel-case: true
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/vote?useSSL=false&serverTimezone=CTT&useUnicode=true&characterEncoding=UTF-8
+

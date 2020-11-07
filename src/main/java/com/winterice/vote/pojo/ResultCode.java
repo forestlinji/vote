@@ -1,4 +1,4 @@
-package com.winterice.pojo;
+package com.winterice.vote.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;

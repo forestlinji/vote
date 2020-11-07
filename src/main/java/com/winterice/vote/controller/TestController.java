@@ -1,6 +1,7 @@
 package com.winterice.vote.controller;
 
 
+
 import com.winterice.vote.annotation.Auth;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;

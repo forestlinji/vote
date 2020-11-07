@@ -1,6 +1,7 @@
 package com.winterice.vote.controller;
 
 import com.winterice.vote.annotation.Auth;
+import com.winterice.vote.interceptor.LoginInterceptor;
 import com.winterice.vote.mapper.RoleMapper;
 import com.winterice.vote.mapper.UserMapper;
 import com.winterice.vote.pojo.ResponseJson;
@@ -47,6 +48,7 @@ public class UserController {
         }
         List<String> roleListById = roleService.getRoleListById(username);
         String token = JwtTokenUtils.createToken(username, roleListById, true);
+        response.addHeader("Access-Control-Expose-Headers", "Authorization");
         response.addHeader("Authorization", token);
         return new ResponseJson(ResultCode.SUCCESS);
     }
@@ -69,8 +71,9 @@ public class UserController {
 
     @GetMapping("getUserInfo")
     @Auth
-    public ResponseJson<UserInfo> getUserInfo( HttpServletResponse response){
-        String userId = response.getHeader("userId");
+    public ResponseJson<UserInfo> getUserInfo(){
+//        String userId = response.getHeader("userId");
+        String userId = LoginInterceptor.getUserId();
         User user = userMapper.selectById(userId);
         if (user == null) {
             return new ResponseJson(ResultCode.UNVALIDPARAMS);
@@ -81,6 +84,7 @@ public class UserController {
         userInfo.setRole(roleListById);
         userInfo.setHasVoted(user.getHasVoted());
         userInfo.setName(user.getRealName());
+        userInfo.setGroupId(user.getGroupId());
         return new ResponseJson<>(ResultCode.SUCCESS, userInfo);
     }
 

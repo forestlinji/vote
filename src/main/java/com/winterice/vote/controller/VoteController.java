@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.winterice.vote.annotation.Auth;
+import com.winterice.vote.interceptor.LoginInterceptor;
 import com.winterice.vote.mapper.GroupMapper;
 import com.winterice.vote.mapper.UserMapper;
 import com.winterice.vote.mapper.VoteMapper;
@@ -37,9 +38,15 @@ public class VoteController {
     ThreadLocal<String> threadLocal = new ThreadLocal<>();
     @PostMapping("vote")
     @Auth
+<<<<<<< HEAD
     public ResponseJson<Object> vote(@RequestBody() VoteVo voteVo, HttpServletResponse response){
         int[] ids = voteVo.voted;
         String uid = response.getHeader("userId");
+=======
+    public ResponseJson<Object> vote(@RequestBody() VoteVo voteVo){
+        Integer[] ids = voteVo.voted;
+        String uid = LoginInterceptor.getUserId();
+>>>>>>> 203d22a0aa1d734a68ebd3120ea6fdf8a24c00d0
         User user = userMapper.selectById(uid);
         if(user.getHasVoted() == 1){
             return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
@@ -54,6 +61,8 @@ public class VoteController {
                     return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
                 }
             }
+            user.setHasVoted(1);
+            userMapper.updateById(user);
             return new ResponseJson<>(ResultCode.SUCCESS);
         }
     }
@@ -69,8 +78,8 @@ public class VoteController {
         }
         PageResult<UserVo> pageResult = new PageResult<>(userVoList);
         pageResult.setCurrent(voteIPage.getCurrent());
-        page.setSize(voteIPage.getSize());
-        page.setTotal(voteIPage.getTotal());
+        pageResult.setSize(voteIPage.getSize());
+        pageResult.setTotal(voteIPage.getTotal());
         return new ResponseJson<>(ResultCode.SUCCESS, pageResult);
     }
     @GetMapping("getVote")

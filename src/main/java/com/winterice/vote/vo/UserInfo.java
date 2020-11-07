@@ -7,6 +7,7 @@ public class UserInfo {
     private String name;
     private List<String> role;
     private Integer hasVoted;
+    private Integer groupId;
 
     public String getUserId() {
         return userId;
@@ -38,5 +39,13 @@ public class UserInfo {
 
     public void setHasVoted(Integer hasVoted) {
         this.hasVoted = hasVoted;
+    }
+
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 }

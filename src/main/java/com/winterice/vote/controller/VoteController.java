@@ -54,6 +54,8 @@ public class VoteController {
                     return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
                 }
             }
+            user.setHasVoted(1);
+            userMapper.updateById(user);
             return new ResponseJson<>(ResultCode.SUCCESS);
         }
     }

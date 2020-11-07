@@ -1,5 +1,6 @@
 package com.winterice.vote.pojo;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Vote {
+    @TableField("uid")
     private String userId;
     private Integer groupId;
 }

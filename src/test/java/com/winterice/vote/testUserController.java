@@ -17,12 +17,21 @@ import org.springframework.web.client.RestTemplate;
 public class TestUserController {
     public String baseUrl = "http://localhost:11451";
     public String token = "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJST0xFIjoidXNlcixhZG1pbiIsImlzcyI6IkZvcmVzdGpDbGltYiIsImlhdCI6MTYwNDc1NzY5NSwic3ViIjoiMCIsImV4cCI6MTYwNzM0OTY5NX0.0-dnGR66F4gQSf50zkxfS3dInWNbFmBCo9bGlWfjhwI";
+
+    /**
+     * 测试加密
+     * @author forestj
+     */
     @Test
     public void testCptry(){
         String cptry = MD5Utils.cptry("123456");
         System.out.println(cptry);
     }
 
+    /**
+     * 测试登录
+     * @author forestj
+     */
     @Test
     public void testLogin(){
         RestTemplate restTemplate = new RestTemplate();

@@ -11,10 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * @author dqbryant
- * @create 2020/11/7 22:06
- */
+
 @SpringBootTest
 public class TestVoteController {
     String baseUrl = "http://localhost:11451";

@@ -35,6 +35,11 @@ public class UserController {
     public UserMapper userMapper;
     @Autowired
     public RoleMapper roleMapper;
+
+    /**
+     * 用户登录
+     * @author forestj
+     */
     @PostMapping("login")
     public ResponseJson login(@RequestBody LoginVo loginVo, HttpServletResponse response){
         String username = loginVo.getUsername();
@@ -53,6 +58,10 @@ public class UserController {
         return new ResponseJson(ResultCode.SUCCESS);
     }
 
+    /**
+     * 用户注册
+     * @author forestj
+     */
     @PostMapping("register")
     public ResponseJson register(@RequestBody @Valid RegisterVo registerVo){
         String stuId = registerVo.getStuId();
@@ -66,6 +75,7 @@ public class UserController {
         user.setHasVoted(0);
         user.setGroupId(registerVo.getGroup());
         userMapper.insert(user);
+        userMapper.addRole(user.getUid());
         return new ResponseJson(ResultCode.SUCCESS);
     }
 

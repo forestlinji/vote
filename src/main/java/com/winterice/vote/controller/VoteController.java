@@ -36,28 +36,27 @@ public class VoteController {
     @Autowired
     GroupMapper groupMapper;
     ThreadLocal<String> threadLocal = new ThreadLocal<>();
+
+    /**
+     * 进行投票
+     * @author 刘东权
+     */
     @PostMapping("vote")
     @Auth
-<<<<<<< HEAD
-    public ResponseJson<Object> vote(@RequestBody() VoteVo voteVo, HttpServletResponse response){
+    public ResponseJson<Object> vote(@RequestBody() VoteVo voteVo) {
         int[] ids = voteVo.voted;
-        String uid = response.getHeader("userId");
-=======
-    public ResponseJson<Object> vote(@RequestBody() VoteVo voteVo){
-        Integer[] ids = voteVo.voted;
         String uid = LoginInterceptor.getUserId();
->>>>>>> 203d22a0aa1d734a68ebd3120ea6fdf8a24c00d0
         User user = userMapper.selectById(uid);
-        if(user.getHasVoted() == 1){
+        if (user.getHasVoted() == 1) {
             return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
-        }else {
-            for (int groupId:ids){
+        } else {
+            for (int groupId : ids) {
                 Vote vote = new Vote(uid, groupId);
-                if(voteMapper.insert(vote) == 1){
-                    if(groupMapper.addNum(groupId) != 1){
+                if (voteMapper.insert(vote) == 1) {
+                    if (groupMapper.addNum(groupId) != 1) {
                         return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
                     }
-                }else {
+                } else {
                     return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
                 }
             }
@@ -66,14 +65,19 @@ public class VoteController {
             return new ResponseJson<>(ResultCode.SUCCESS);
         }
     }
+
+    /**
+     * 进行同学投票情况
+     * @author 刘东权
+     */
     @GetMapping("getVoteList")
     @Auth("admin")
-    public ResponseJson<PageResult<UserVo>> getVoteList(@RequestParam(defaultValue = "1", required = false)int pageNum,@RequestParam(defaultValue = "15",required = false) int pageSize){
-        Page<User> page = new Page<>(pageNum,pageSize);
-        IPage<User> voteIPage = userMapper.selectPage(page,null);
+    public ResponseJson<PageResult<UserVo>> getVoteList(@RequestParam(defaultValue = "1", required = false) int pageNum, @RequestParam(defaultValue = "15", required = false) int pageSize) {
+        Page<User> page = new Page<>(pageNum, pageSize);
+        IPage<User> voteIPage = userMapper.selectPage(page, new QueryWrapper<User>().eq("has_voted", 1));
         List<User> userList = voteIPage.getRecords();
         List<UserVo> userVoList = new LinkedList<>();
-        for (User user:userList){
+        for (User user : userList) {
             userVoList.add(new UserVo(user, voteMapper.getVoteList(user.getUid())));
         }
         PageResult<UserVo> pageResult = new PageResult<>(userVoList);
@@ -82,17 +86,19 @@ public class VoteController {
         pageResult.setTotal(voteIPage.getTotal());
         return new ResponseJson<>(ResultCode.SUCCESS, pageResult);
     }
+
     @GetMapping("getVote")
     @Auth()
-    public ResponseJson<GroupVo> getVote(){
+    public ResponseJson<GroupVo> getVote() {
         return new ResponseJson<>(ResultCode.SUCCESS, new GroupVo(groupMapper.selectAll()));
     }
+
     @GetMapping("reset")
     @Auth("admin")
-    public ResponseJson<String> reset(){
-        if(userMapper.reset() && groupMapper.reset()>0 && voteMapper.delete(null)>0){
+    public ResponseJson<String> reset() {
+        if (userMapper.reset() && groupMapper.reset() > 0 && voteMapper.delete(null) > 0) {
             return new ResponseJson<>(ResultCode.SUCCESS);
-        }else {
+        } else {
             return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
         }
     }

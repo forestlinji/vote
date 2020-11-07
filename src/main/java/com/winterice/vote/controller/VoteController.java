@@ -2,6 +2,7 @@ package com.winterice.vote.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.winterice.vote.annotation.Auth;
@@ -37,13 +38,13 @@ public class VoteController {
     @PostMapping("vote")
     @Auth
     public ResponseJson<Object> vote(@RequestBody() VoteVo voteVo, HttpServletResponse response){
-        Integer[] ids = voteVo.voted;
+        int[] ids = voteVo.voted;
         String uid = response.getHeader("userId");
         User user = userMapper.selectById(uid);
         if(user.getHasVoted() == 1){
             return new ResponseJson<>(ResultCode.UNVALIDPARAMS);
         }else {
-            for (Integer groupId:ids){
+            for (int groupId:ids){
                 Vote vote = new Vote(uid, groupId);
                 if(voteMapper.insert(vote) == 1){
                     if(groupMapper.addNum(groupId) != 1){
@@ -75,12 +76,12 @@ public class VoteController {
     @GetMapping("getVote")
     @Auth()
     public ResponseJson<GroupVo> getVote(){
-        return new ResponseJson<>(ResultCode.SUCCESS, new GroupVo(groupMapper.selectList(null)));
+        return new ResponseJson<>(ResultCode.SUCCESS, new GroupVo(groupMapper.selectAll()));
     }
-    @Update("reset")
+    @GetMapping("reset")
     @Auth("admin")
     public ResponseJson<String> reset(){
-        if(userMapper.reset()){
+        if(userMapper.reset() && groupMapper.reset()>0 && voteMapper.delete(null)>0){
             return new ResponseJson<>(ResultCode.SUCCESS);
         }else {
             return new ResponseJson<>(ResultCode.UNVALIDPARAMS);

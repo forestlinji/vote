@@ -39,7 +39,10 @@ public class TestUserController {
         ResponseEntity<Object> objectResponseEntity = restTemplate.postForEntity(baseUrl + "/user/login", new LoginVo("0", "123456"), Object.class);
         Assert.isTrue(objectResponseEntity.getStatusCodeValue() == 200);
     }
-
+    /**
+     * 测试获取用户信息
+     * @author forestj
+     */
     @Test
     public void testGetUserInfo(){
         RestTemplate restTemplate = new RestTemplate();

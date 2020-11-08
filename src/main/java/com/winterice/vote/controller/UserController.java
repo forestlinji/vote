@@ -78,7 +78,10 @@ public class UserController {
         userMapper.addRole(user.getUid());
         return new ResponseJson(ResultCode.SUCCESS);
     }
-
+    /**
+     * 获取用户信息
+     * @author forestj
+     */
     @GetMapping("getUserInfo")
     @Auth
     public ResponseJson<UserInfo> getUserInfo(){

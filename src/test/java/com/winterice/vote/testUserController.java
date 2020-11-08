@@ -41,7 +41,7 @@ public class TestUserController {
     }
     /**
      * 测试获取用户信息
-     * @author forestj
+     * @author zhangtingyi20
      */
     @Test
     public void testGetUserInfo(){

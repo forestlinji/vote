@@ -80,7 +80,7 @@ public class UserController {
     }
     /**
      * 获取用户信息
-     * @author forestj
+     * @author zhangtingyi20
      */
     @GetMapping("getUserInfo")
     @Auth

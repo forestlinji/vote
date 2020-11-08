@@ -34,6 +34,10 @@ public class TestVoteController {
         ResponseEntity<Object> responseEntity =  restTemplate.exchange(baseUrl + "/vote/getVoteList?pageNum=2", HttpMethod.GET, httpEntity, Object.class);
         Assert.isTrue(responseEntity.getStatusCodeValue() == 200);
     }
+    /**
+     * 测试获取投票信息
+     * @author ganjy
+     */
     @Test
     public void testGetVote(){
         RestTemplate restTemplate = new RestTemplate();
